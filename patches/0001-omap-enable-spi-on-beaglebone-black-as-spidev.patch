@@ -1,0 +1,56 @@
+From a016077c7b011f41ea5bf759fa35890a3034e682 Mon Sep 17 00:00:00 2001
+From: "Marty E. Plummer" <hanetzer@startmail.com>
+Date: Mon, 15 Mar 2021 17:58:40 -0500
+Subject: [PATCH 1/5] omap: enable spi on beaglebone black as spidev
+
+Signed-off-by: Marty E. Plummer <hanetzer@startmail.com>
+---
+ .../patches/999-enable-spi0-as-spidev.patch   | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+ create mode 100644 target/linux/omap/patches/999-enable-spi0-as-spidev.patch
+
+diff --git a/target/linux/omap/patches/999-enable-spi0-as-spidev.patch b/target/linux/omap/patches/999-enable-spi0-as-spidev.patch
+new file mode 100644
+index 0000000000..3eeb694354
+--- /dev/null
++++ b/target/linux/omap/patches/999-enable-spi0-as-spidev.patch
+@@ -0,0 +1,36 @@
++--- a/arch/arm/boot/dts/am335x-boneblack-common.dtsi
+++++ b/arch/arm/boot/dts/am335x-boneblack-common.dtsi
++@@ -66,6 +66,15 @@
++ 			AM33XX_PADCONF(AM335X_PIN_GPMC_A11, PIN_OUTPUT_PULLDOWN, MUX_MODE7) /* gpmc_a11.GPIO1_27 */
++ 		>;
++ 	};
+++
+++	spi0_pins: pinmux_spi0_pins {
+++		pinctrl-single,pins = <
+++			AM33XX_PADCONF(AM335X_PIN_SPI0_SCLK, PIN_INPUT_PULLUP, MUX_MODE0)
+++			AM33XX_PADCONF(AM335X_PIN_SPI0_D0, PIN_INPUT_PULLUP, MUX_MODE0)
+++			AM33XX_PADCONF(AM335X_PIN_SPI0_D1, PIN_OUTPUT_PULLUP, MUX_MODE0)
+++			AM33XX_PADCONF(AM335X_PIN_SPI0_CS0, PIN_OUTPUT_PULLUP, MUX_MODE0)
+++		>;
+++	};
++ };
++ 
++ &lcdc {
++@@ -85,6 +94,17 @@
++ 	};
++ };
++ 
+++&spi0 {
+++	status = "okay";
+++	pinctrl-names = "default";
+++	pinctrl-0 = <&spi0_pins>;
+++	spidev@0 {
+++		spi-max-frequency = <24000000>;
+++		reg = <0>;
+++		compatible = "linux,spidev";
+++	};
+++};
+++
++ &i2c0 {
++ 	tda19988: tda19988@70 {
++ 		compatible = "nxp,tda998x";
+-- 
+2.30.2
+

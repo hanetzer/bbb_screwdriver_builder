@@ -1,7 +1,7 @@
-From 3b66f0c679a7f4229a6d368713497e5426c8416e Mon Sep 17 00:00:00 2001
+From 8d79bf2aff83c614f69705041e46a07fc1eeb396 Mon Sep 17 00:00:00 2001
 From: Alexander Couzens <lynxis@fe80.eu>
 Date: Mon, 16 Mar 2015 02:51:07 +0100
-Subject: [PATCH 3/9] kernel/spi: add kernel package for spi-omap-24xx
+Subject: [PATCH 2/5] kernel/spi: add kernel package for spi-omap-24xx
 
 spi-omap-24xx can be found in TI based SoC like the beaglebone black
 ---
@@ -9,10 +9,10 @@ spi-omap-24xx can be found in TI based SoC like the beaglebone black
  1 file changed, 17 insertions(+)
 
 diff --git a/package/kernel/linux/modules/spi.mk b/package/kernel/linux/modules/spi.mk
-index 1c2a789..1d70138 100644
+index 01dc7dc7e6..db1f8a4090 100644
 --- a/package/kernel/linux/modules/spi.mk
 +++ b/package/kernel/linux/modules/spi.mk
-@@ -89,3 +89,20 @@ define KernelPackage/spi-dev/description
+@@ -73,3 +73,20 @@ define KernelPackage/spi-dev/description
  endef
  
  $(eval $(call KernelPackage,spi-dev))
@@ -34,5 +34,5 @@ index 1c2a789..1d70138 100644
 +$(eval $(call KernelPackage,spi-omap-24xx))
 +
 -- 
-2.3.3
+2.30.2
 

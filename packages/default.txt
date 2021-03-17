@@ -17,7 +17,6 @@ picocom
 ser2net
 
 # network
-mdns
 ip-full
 lldpd
 tcpdump-mini
@@ -25,14 +24,8 @@ tcpdump-mini
 flashrom
 
 # kernel modules usb
-kmod-usb2-omap
-kmod-usb-phy-omap-usb2
-kmod-usb-phy-am335x
-kmod-usb-musb-hdrc
-kmod-usb-musb-platformglue
-kmod-usb-ehci-debug-gadget
-kmod-usb-phy-twl4030
-kmod-usb-phy-twl6030
+kmod-usb-gadget-ehci-debug
+kmod-usb-gadget-serial
 
 # kernel modules spi
 kmod-spi-dev
@@ -49,15 +42,9 @@ kmod-rtl8187
 kmod-rtl8192cu
 kmod-rtlwifi-usb
 
-# power management ti
-am33x-cm3
-
 # GUI
 # luci-theme-bootstrap
 # uhttpd
 # uhttpd-mod-ubus
 # uhttpd-mod-tls
 # px5g
-
-# IPv6
-kmod-ipv6

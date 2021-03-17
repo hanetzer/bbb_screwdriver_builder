@@ -36,7 +36,7 @@ openwrt-clean: stamp-clean-openwrt-cleaned .stamp-openwrt-cleaned
 # update openwrt and checkout specified commit
 openwrt-update: stamp-clean-openwrt-updated .stamp-openwrt-updated
 .stamp-openwrt-updated: .stamp-openwrt-cleaned
-	cd $(OPENWRT_DIR); git checkout --detach $(OPENWRT_COMMIT)
+	cd $(OPENWRT_DIR); git checkout $(OPENWRT_BRANCH)
 	touch $@
 
 # patches require updated openwrt working copy
@@ -64,7 +64,8 @@ pre-patch: stamp-clean-pre-patch .stamp-pre-patch
 # patch openwrt working copy
 patch: stamp-clean-patched .stamp-patched
 .stamp-patched: .stamp-pre-patch
-	cd $(OPENWRT_DIR); quilt push -a
+	cd $(OPENWRT_DIR); quilt upgrade; quilt push -a
+	chmod 755 $(OPENWRT_DIR)/target/linux/*/base-files/etc/board.d/*
 	touch $@
 
 # openwrt config
@@ -94,8 +95,8 @@ firmwares: stamp-clean-firmwares .stamp-firmwares
 	rm -rf $(IB_BUILD_DIR)
 	mkdir -p $(IB_BUILD_DIR)
 	$(eval TOOLCHAIN_PATH := $(shell printf "%s:" $(OPENWRT_DIR)/staging_dir/toolchain-*/bin))
-	$(eval IB_FILE := $(shell ls $(OPENWRT_DIR)/bin/$(MAINTARGET)/OpenWrt-ImageBuilder*$(TARGET)*.tar.bz2))
-	$(eval IB_DIR := $(shell basename $(IB_FILE) .tar.bz2))
+	$(eval IB_FILE := $(shell ls $(OPENWRT_DIR)/bin/targets/$(MAINTARGET)/generic/screwdriver-imagebuilder*$(TARGET)*.tar.xz))
+	$(eval IB_DIR := $(shell basename $(IB_FILE) .tar.xz))
 	cd $(IB_BUILD_DIR); tar xf $(IB_FILE)
 	export PATH=$(PATH):$(TOOLCHAIN_PATH); \
 	PACKAGES_PATH="$(FW_DIR)/packages"; \
@@ -123,11 +124,11 @@ firmwares: stamp-clean-firmwares .stamp-firmwares
 	  mv $$DIR_ABS $$TARGET_DIR; \
 	done;
 	# copy imagebuilder, sdk and toolchain (if existing)
-	cp -a $(OPENWRT_DIR)/bin/$(MAINTARGET)/OpenWrt-*.tar.bz2 $(FW_TARGET_DIR)/
+	cp -a $(OPENWRT_DIR)/bin/targets/$(MAINTARGET)/generic/screwdriver-*.tar.* $(FW_TARGET_DIR)/
 	# copy packages
 	PACKAGES_DIR="$(FW_TARGET_DIR)/packages"; \
 	rm -rf $$PACKAGES_DIR; \
-	cp -a $(OPENWRT_DIR)/bin/$(MAINTARGET)/packages $$PACKAGES_DIR
+	cp -a $(OPENWRT_DIR)/bin/packages $$PACKAGES_DIR
 	rm -rf $(IB_BUILD_DIR)
 	touch $@
 

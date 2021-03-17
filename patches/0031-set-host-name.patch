@@ -1,11 +1,32 @@
-Index: openwrt/package/base-files/files/etc/config/system
-===================================================================
---- openwrt.orig/package/base-files/files/etc/config/system	2015-10-17 01:31:19.298361163 +0200
-+++ openwrt/package/base-files/files/etc/config/system	2015-10-17 01:54:28.006245902 +0200
-@@ -1,5 +1,5 @@
- config system
--	option hostname	OpenWrt
-+	option hostname	screwdriver
- 	option timezone	UTC
- 
- config timeserver ntp
+From 250efe0d09fca062ee8f7109f93a5ce1f1ea1cb5 Mon Sep 17 00:00:00 2001
+From: "Marty E. Plummer" <hanetzer@startmail.com>
+Date: Mon, 15 Mar 2021 18:31:13 -0500
+Subject: [PATCH 4/5] set host name
+
+Signed-off-by: Marty E. Plummer <hanetzer@startmail.com>
+---
+ target/linux/omap/base-files/etc/board.d/03_system | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+ create mode 100644 target/linux/omap/base-files/etc/board.d/03_system
+
+diff --git a/target/linux/omap/base-files/etc/board.d/03_system b/target/linux/omap/base-files/etc/board.d/03_system
+new file mode 100644
+index 0000000000..8bd9482912
+--- /dev/null
++++ b/target/linux/omap/base-files/etc/board.d/03_system
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++. /lib/functions/system.sh
++. /lib/functions/uci-defaults.sh
++
++board_config_update
++
++ucidef_set_hostname "screwdriver"
++
++board_config_flush
++
++exit 0
+-- 
+2.30.2
+

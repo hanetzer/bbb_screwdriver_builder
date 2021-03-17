@@ -1,16 +1,38 @@
-Index: openwrt/package/base-files/files/etc/config/network
-===================================================================
---- openwrt.orig/package/base-files/files/etc/config/network	2015-07-01 18:21:53.132832120 +0200
-+++ openwrt/package/base-files/files/etc/config/network	2015-10-11 12:00:55.531614274 +0200
-@@ -9,10 +9,7 @@
- config interface lan
- 	option ifname	eth0
- 	option type 	bridge
--	option proto	static
--	option ipaddr	192.168.1.1
--	option netmask	255.255.255.0
--	option ip6assign 60
-+	option proto	dhcp
- 
- config globals globals
- 	option ula_prefix auto
+From 7dae656486ff1d7052ea2533a9d77d64bbe38aa0 Mon Sep 17 00:00:00 2001
+From: "Marty E. Plummer" <hanetzer@startmail.com>
+Date: Mon, 15 Mar 2021 18:29:31 -0500
+Subject: [PATCH 3/5] set dhclient
+
+Signed-off-by: Marty E. Plummer <hanetzer@startmail.com>
+---
+ .../omap/base-files/etc/board.d/02_network     | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 target/linux/omap/base-files/etc/board.d/02_network
+
+diff --git a/target/linux/omap/base-files/etc/board.d/02_network b/target/linux/omap/base-files/etc/board.d/02_network
+new file mode 100644
+index 0000000000..1c9b4b249e
+--- /dev/null
++++ b/target/linux/omap/base-files/etc/board.d/02_network
+@@ -0,0 +1,18 @@
++#!/bin/sh
++
++. /lib/functions/system.sh
++. /lib/functions/uci-defaults.sh
++
++board_config_update
++
++board=$(board_name)
++
++case "$board" in
++ti,am335x-bone-black)
++	ucidef_set_interface_lan "eth0" "dhcp"
++	;;
++esac
++
++board_config_flush
++
++exit 0
+-- 
+2.30.2
+

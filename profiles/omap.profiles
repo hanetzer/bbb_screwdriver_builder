@@ -1,1 +1,5 @@
-BEAGLEBOARD
+ti_omap3-beagle
+ti_omap4-panda
+ti_am335x-bone-black
+ti_am335x-evm
+
